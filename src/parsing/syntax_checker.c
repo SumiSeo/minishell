@@ -6,7 +6,7 @@
 /*   By: sokaraku <sokaraku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 20:00:31 by sokaraku          #+#    #+#             */
-/*   Updated: 2024/09/22 17:18:39 by sokaraku         ###   ########.fr       */
+/*   Updated: 2024/10/05 20:17:01 by sokaraku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ static bool	check_syntax(t_tokens *head)
  */
 bool	full_check(t_tokens **head)
 {
+	if (!(*head))
+		return (true);
 	if (!check_operators_validity(*head))
 		return (ft_err(0, NULL), false);
 	if (!check_syntax(*head))

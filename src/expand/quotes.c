@@ -6,7 +6,7 @@
 /*   By: sokaraku <sokaraku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:40:26 by sokaraku          #+#    #+#             */
-/*   Updated: 2024/09/29 18:23:21 by sokaraku         ###   ########.fr       */
+/*   Updated: 2024/10/05 20:15:26 by sokaraku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	mark_quotes(t_tokens *head)
  * @brief Helper function for quotes_remover.
  * @param node Pointer to the node in which the marked quotes are removed.
  * @param quotes_count The number of quotes to remove.
- * @returns SUCCESS (1) if the removing worked 
+ * @returns SUCCESS (1) if the removing worked
  * or ALLOCATION_FAILURE (-1) otherwise.
  */
 static __int8_t	quotes_remover_helper(t_tokens *node, short int quotes_count)
@@ -114,7 +114,7 @@ static __int8_t	quotes_remover_helper(t_tokens *node, short int quotes_count)
 /**
  * @brief Remove marked quotes from the tokens' list.
  * @param head A pointer to the head of the tokens' list.
- * @returns SUCCESS (1) if the removing worked 
+ * @returns SUCCESS (1) if the removing worked
  * or ALLOCATION_FAILURE (-1) otherwise.
  */
 static __int8_t	quotes_remover(t_tokens *head)
@@ -143,11 +143,15 @@ static __int8_t	quotes_remover(t_tokens *head)
  * @brief Handles quotes in the tokens list given an instruction.
  * @param head A pointer to the head of the tokens list.
  * @param mode The instruction to do.
+ * @param alloc_fail A boolean taking the value 1 if an allocation failure
+ * occurred and 0 otherwise.
  * @returns SUCCESS (1) if the check or action worked, and FAILURE (0)
  * otherwise.
  */
-__int8_t	quotes_handler(t_tokens *head, __int8_t mode)
+__int8_t	quotes_handler(t_tokens *head, __int8_t mode, bool alloc_fail)
 {
+	if (!head && alloc_fail == false)
+		return (SUCCESS);
 	if (mode == CLOSED_QUOTES_CHECK)
 		return (check_if_closed_quotes(head));
 	if (mode == QUOTES_MARKING_MODE)

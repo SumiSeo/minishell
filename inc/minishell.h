@@ -6,7 +6,7 @@
 /*   By: sokaraku <sokaraku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 13:48:11 by sokaraku          #+#    #+#             */
-/*   Updated: 2024/10/05 19:29:38 by sokaraku         ###   ########.fr       */
+/*   Updated: 2024/10/05 20:15:46 by sokaraku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		free_all(char *line, t_exec *exec, t_env *env_list, bool free_env);
 //							PARSING
 //				-->create_tokens.c
 
-t_tokens	*create_tokens(char *line);
+t_tokens	*create_tokens(char *line, bool *alloc_fail);
 
 //				-->ft_parse.c
 
@@ -115,7 +115,7 @@ __int8_t	extract_all(t_tokens *head, t_env *env_list, int last_exit_status);
 
 //				-->quotes.c
 
-__int8_t	quotes_handler(t_tokens *head, __int8_t mode);
+__int8_t	quotes_handler(t_tokens *head, __int8_t mode, bool alloc_fail);
 
 // 				-->find_builtin.c
 int			which_builtin(t_exec *cmds);

@@ -6,7 +6,7 @@
 /*   By: sokaraku <sokaraku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 17:34:13 by sokaraku          #+#    #+#             */
-/*   Updated: 2024/10/04 19:40:03 by sokaraku         ###   ########.fr       */
+/*   Updated: 2024/10/05 20:14:07 by sokaraku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@
  * @param tokens The head of the tokenized list with whitespaces.
  * @param head Head of the token
  * @param tokens The tokenized list with whitespaces.
+ * @param alloc_f A boolean taking the value 1 if an allocation failure
+ * occurred and 0 otherwise.
  * @returns The new list or NULL if the first tokens were only whitespaces,
  * or if an allocation failure occured.
  */
-t_tokens	*delete_whitespaces(t_tokens *tokens, t_tokens *tmp, short int i)
+t_tokens	*delete_whitespaces(t_tokens *tokens, t_tokens *tmp, short int i,
+		bool *alloc_f)
 {
 	t_tokens	*new;
 
@@ -35,9 +38,9 @@ t_tokens	*delete_whitespaces(t_tokens *tokens, t_tokens *tmp, short int i)
 			if (add_token(&new, tmp) == -1)
 			{
 				if (new)
-					return (free_tokens(new->head, true), NULL);
+					return (free_tokens(new->head, true), *alloc_f = 1, NULL);
 				else
-					return (free_tokens(tokens, true), NULL);
+					return (free_tokens(tokens, true), *alloc_f = 1, NULL);
 			}
 		}
 		tmp = tokens;
@@ -154,9 +157,11 @@ static char	*get_token(char **line, short int end, short int s_q, short int d_q)
  * @brief Creates a linked list of tokens, based on an input line read from
  * the command line.
  * @param line The input to tokenize.
+ * @param alloc_fail A boolean taking the value 1 if an allocation failure
+ * occurred and 0 otherwise.
  * @returns A list of tokens. Returns NULL if line is null.(null si !line?).
  */
-t_tokens	*create_tokens(char *line)
+t_tokens	*create_tokens(char *line, bool *alloc_fail)
 {
 	t_tokens	*tokens;
 	char		*str;
@@ -176,7 +181,7 @@ t_tokens	*create_tokens(char *line)
 		if (add_token(&tokens, (new_node_token(str, 0))) == -1)
 			return (free_tokens(tokens, true), NULL);
 	}
-	tokens = delete_whitespaces(tokens, NULL, 0);
+	tokens = delete_whitespaces(tokens, NULL, 0, alloc_fail);
 	if (!tokens)
 		return (NULL);
 	return (tokens);

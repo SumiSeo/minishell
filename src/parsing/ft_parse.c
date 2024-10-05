@@ -6,7 +6,7 @@
 /*   By: sokaraku <sokaraku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 15:52:04 by sokaraku          #+#    #+#             */
-/*   Updated: 2024/10/04 20:45:56 by sokaraku         ###   ########.fr       */
+/*   Updated: 2024/10/05 20:14:28 by sokaraku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,18 @@ t_exec	*ft_parse(char *line, __int8_t *error, t_env *env_list, int last_exit)
 {
 	t_tokens	*t;
 	t_exec		*e;
+	bool		alloc_fail;
 
-	t = create_tokens(line);
-	if (!t)
+	alloc_fail = false;
+	t = create_tokens(line, &alloc_fail);
+	if (!t && alloc_fail)
 		return (free_env_and_quit(env_list), NULL);
-	if (quotes_handler(t, CLOSED_QUOTES_CHECK) == false)
+	if (quotes_handler(t, CLOSED_QUOTES_CHECK, alloc_fail) == false)
 		return (*error = UNCLOSED_QUOTES, free_tokens(t, true), NULL);
-	quotes_handler(t, QUOTES_MARKING_MODE);
+	quotes_handler(t, QUOTES_MARKING_MODE, alloc_fail);
 	if (extract_all(t, env_list, last_exit) == ALLOCATION_FAILURE)
 		return (free_tokens(t, true), free_env_and_quit(env_list), NULL);
-	if (quotes_handler(t, QUOTES_REMOVING_MODE) == FAILURE)
+	if (quotes_handler(t, QUOTES_REMOVING_MODE, alloc_fail) == FAILURE)
 		return (free_tokens(t, true), free_env_and_quit(env_list), NULL);
 	if (full_check(&t) == false)
 		return (*error = SYNTAX_ERROR, free_tokens(t, true), NULL);
