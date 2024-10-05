@@ -6,7 +6,7 @@
 /*   By: sumseo <sumseo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:30:11 by sumseo            #+#    #+#             */
-/*   Updated: 2024/10/05 16:54:45 by sumseo           ###   ########.fr       */
+/*   Updated: 2024/10/05 20:31:06 by sumseo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	exec_shell(t_exec **exec_list, t_env **env_list, char **env_copy,
 	}
 	else
 	{
+		signal(SIGQUIT, sig_handler_quit);
 		fork_id = fork();
 		if (fork_id == 0)
 			init_child(exec_list, env_copy, data);
